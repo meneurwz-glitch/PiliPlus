@@ -412,8 +412,8 @@ class _PgcIntroPageState extends State<PgcIntroPage> {
           Obx(
             () => ActionItem(
               animation: introController.tripleAnimation,
-              icon: const Icon(FontAwesomeIcons.thumbsUp),
-              selectIcon: const Icon(FontAwesomeIcons.solidThumbsUp),
+              icon: const Icon(Icons.thumb_up_outlined),
+              selectIcon: const Icon(Icons.thumb_up),
               selectStatus: introController.hasLike.value,
               semanticsLabel: '点赞',
               text: NumUtils.numFormat(item.stat!.like),
@@ -424,8 +424,8 @@ class _PgcIntroPageState extends State<PgcIntroPage> {
           Obx(
             () => ActionItem(
               animation: introController.tripleAnimation,
-              icon: const Icon(FontAwesomeIcons.b),
-              selectIcon: const Icon(FontAwesomeIcons.b),
+              icon: const Icon(Icons.alpha_b_circle_outline),
+              selectIcon: const Icon(Icons.alpha_b_circle),
               onTap: introController.actionCoinVideo,
               selectStatus: introController.hasCoin,
               semanticsLabel: '投币',
