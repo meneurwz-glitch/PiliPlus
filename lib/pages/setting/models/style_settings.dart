@@ -152,6 +152,14 @@ List<SettingsModel> get styleSettings => [
     defaultVal: true,
     needReboot: true,
   ),
+  const SettingsModel(
+    settingsType: SettingsType.sw1tch,
+    title: '首页背景渐变',
+    leading: Icon(Icons.gradient_outlined),
+    setKey: SettingBoxKey.enableGradientBg,
+    defaultVal: true,
+    needReboot: true,
+  ),
   SettingsModel(
     settingsType: SettingsType.normal,
     onTap: (setState) async {
