@@ -270,6 +270,47 @@ Widget defaultUser({
   );
 }
 
+class _CustomTabsState extends State<CustomTabs> {
+  final HomeController _homeController = Get.put(HomeController());
+
+  void onTap(int index) {
+    feedBack();
+    if (_homeController.initialIndex.value == index) {
+      _homeController.tabsCtrList[index]().animateToTop();
+    }
+    _homeController.initialIndex.value = index;
+    _homeController.tabController.index = index;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 44,
+      margin: const EdgeInsets.only(top: 4),
+      child: Obx(
+        () => ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 14.0),
+          scrollDirection: Axis.horizontal,
+          itemCount: _homeController.tabs.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(width: 10);
+          },
+          itemBuilder: (BuildContext context, int index) {
+            String label = _homeController.tabs[index]['label'];
+            return Obx(
+              () => CustomChip(
+                onTap: () => onTap(index),
+                label: label,
+                selected: index == _homeController.initialIndex.value,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+      
 Widget msgBadge(MainController mainController) {
   void toWhisper() {
     mainController.msgUnReadCount.value = '';
