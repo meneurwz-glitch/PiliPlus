@@ -31,45 +31,67 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
-    return Column(
-      children: [
-        if (!_homeController.useSideBar &&
-            MediaQuery.sizeOf(context).isPortrait)
-          customAppBar(theme),
-        if (_homeController.tabs.length > 1)
-          Material(
-            color: theme.colorScheme.surface,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: SizedBox(
-                height: 42,
-                width: double.infinity,
-                child: TabBar(
-                  controller: _homeController.tabController,
-                  tabs: [
-                    for (var i in _homeController.tabs) Tab(text: i.label),
-                  ],
-                  isScrollable: true,
-                  dividerColor: Colors.transparent,
-                  dividerHeight: 0,
-                  splashBorderRadius: StyleString.mdRadius,
-                  tabAlignment: TabAlignment.center,
-                  onTap: (_) {
-                    feedBack();
-                    if (!_homeController.tabController.indexIsChanging) {
-                      _homeController.animateToTop();
-                    }
-                  },
+    return Scaffold(
+      extendBody: true,
+      // extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarIconBrightness:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+        ),
+      ),
+      body: Column(
+        children: [
+          if (!_homeController.useSideBar &&
+              MediaQuery.sizeOf(context).isPortrait)
+            customAppBar(theme),
+          if (_homeController.tabs.length > 1)...[
+            if (_homeController.enableGradientBg) ...[
+              const CustomTabs(),
+            ] else ...[
+              const SizedBox(height: 4),
+            Material(
+              color: theme.colorScheme.surface,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: SizedBox(
+                  height: 42,
+                  width: double.infinity,
+                  child: TabBar(
+                    controller: _homeController.tabController,
+                    tabs: [
+                      for (var i in _homeController.tabs) Tab(text: i.label),
+                    ],
+                    isScrollable: true,
+                    dividerColor: Colors.transparent,
+                    dividerHeight: 0,
+                    splashBorderRadius: StyleString.mdRadius,
+                    tabAlignment: TabAlignment.center,
+                    onTap: (_) {
+                      feedBack();
+                      if (!_homeController.tabController.indexIsChanging) {
+                        _homeController.animateToTop();
+                      }
+                      _homeController.initialIndex.value = value;
+                    },
+                  ),
                 ),
               ),
-            ),
-          )
-        else
-          const SizedBox(height: 6),
-        Expanded(
-          child: tabBarView(
-            controller: _homeController.tabController,
-            children: _homeController.tabs.map((e) => e.page).toList(),
+            )
+            ],
+          ] else ...[
+            const SizedBox(height: 6),
+          ],
+          Expanded(
+            child: tabBarView(
+              controller: _homeController.tabController,
+              children: _homeController.tabs.map((e) => e.page).toList(),
           ),
         ),
       ],
