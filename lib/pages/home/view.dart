@@ -310,6 +310,87 @@ class _CustomTabsState extends State<CustomTabs> {
     );
   }
 }
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final double height;
+  final Stream<bool>? stream;
+  final HomeController ctr;
+
+  const CustomAppBar({
+    super.key,
+    this.height = kToolbarHeight,
+    this.stream,
+    required this.ctr,
+  });
+
+  @override
+  Size get preferredSize => Size.fromHeight(height);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: stream,
+      initialData: true,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return AnimatedOpacity(
+          opacity: snapshot.data ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: AnimatedContainer(
+            curve: Curves.easeInOutCubicEmphasized,
+            duration: const Duration(milliseconds: 500),
+            height: snapshot.data ? 52 : 0,
+            padding: const EdgeInsets.fromLTRB(14, 6, 14, 0),
+            child: SearchBarAndUser(
+              ctr: ctr,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class CustomChip extends StatelessWidget {
+  final Function onTap;
+  final String label;
+  final bool selected;
+  const CustomChip({
+    super.key,
+    required this.onTap,
+    required this.label,
+    required this.selected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorTheme = Theme.of(context).colorScheme;
+    final TextStyle chipTextStyle = selected
+        ? const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
+        : const TextStyle(fontSize: 13);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    const VisualDensity visualDensity =
+        VisualDensity(horizontal: -4.0, vertical: -2.0);
+    return InputChip(
+      side: selected
+          ? BorderSide(
+              color: colorScheme.secondary.withOpacity(0.2),
+              width: 2,
+            )
+          : BorderSide.none,
+      // backgroundColor: colorTheme.primaryContainer.withOpacity(0.1),
+      // selectedColor: colorTheme.secondaryContainer.withOpacity(0.8),
+      color: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+        return colorTheme.secondaryContainer.withOpacity(0.6);
+      }),
+      padding: const EdgeInsets.fromLTRB(6, 1, 6, 1),
+      label: Text(label, style: chipTextStyle),
+      onPressed: () => onTap(),
+      selected: selected,
+      showCheckmark: false,
+      visualDensity: visualDensity,
+    );
+  }
+}
       
 Widget msgBadge(MainController mainController) {
   void toWhisper() {
