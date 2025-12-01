@@ -18,6 +18,7 @@ class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin, ScrollOrRefreshMixin {
   late List<HomeTabType> tabs;
   late TabController tabController;
+  late bool enableGradientBg;
 
   StreamController<bool>? searchBarStream;
   final bool hideSearchBar = Pref.hideSearchBar;
@@ -46,7 +47,8 @@ class HomeController extends GetxController
       lateCheckSearchAt = DateTime.now().millisecondsSinceEpoch;
       querySearchDefault();
     }
-
+     enableGradientBg =
+        setting.get(SettingBoxKey.enableGradientBg, defaultValue: true);
     setTabConfig();
   }
 
